@@ -8,13 +8,14 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   onChange: () => void,
 }
 
-export const TodoItem = (props: Props): JSX.Element => {
-  const { done } = props.todo;
-
-  return (
-    <li className={classnames({ done })}>
-      <input type="checkbox" name={props.todo.id} {...props} />
-      <label htmlFor={props.todo.id}>{props.todo.text}</label>
-    </li>
-  )
-}
+export const TodoItem = (props: Props): JSX.Element => (
+  <li className={classnames({ done: props.todo.done })}>
+    <input
+      type="checkbox"
+      name={props.todo.id}
+      id={props.todo.id}
+      onChange={props.onChange}
+    />
+    <label htmlFor={props.todo.id}>{props.todo.text}</label>
+  </li>
+);
