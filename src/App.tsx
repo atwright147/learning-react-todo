@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
+import { shallowEqual } from 'react-redux';
+import { add, done } from './todoSlice';
+
+import { useAppDispatch, useAppSelector } from './hooks';
+import { TodoItem } from './components/todo-item';
+import { TodoForm } from './components/todo-form';
+
 import './App.css';
 
-function App() {
+export const App = (): JSX.Element => {
+  const count = useAppSelector((state) => state.todo.count, shallowEqual);
+  const todos = useAppSelector((state) => state.todo.todos, shallowEqual);
+  const dispatch = useAppDispatch();
+
+  const handleAdd = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    e.preventDefault();
+    dispatch(add(e.target.value));
+  };
+
+  const handleDone = (id: string): void => {
+    dispatch(done(id));
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Todos</h1>
       </header>
+
+      <ul className="Todos">
+        {count > 0 && todos.map((todo) => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onChange={() => {
+              console.info('xxx', todo.id);
+              handleDone(todo.id)
+            }}
+          />
+        ))}
+      </ul>
+      {count === 0 && <p>No todos</p>}
+
+      <TodoForm />
     </div>
   );
 }
-
-export default App;
