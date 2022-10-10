@@ -1,4 +1,4 @@
-import { current, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface Todo {
@@ -47,15 +47,8 @@ export const todoSlice = createSlice({
       state.count += 1;
     },
     done: (state: TodosSlice, action) => {
-      // state.todos = state.todos.filter((todo) => todo.id !== action.payload);
-      const index = state.todos.findIndex((todo) => todo.id !== action.payload);
-      console.info('index', index);
-      console.info(current(state));
-      // console.info('state.todos', state.todos);
-      // console.info('action.payload', action.payload);
-      // console.info(state.todos[1].id, action.payload);
-      // console.info(state.todos[1].id === action.payload);
-      state.todos[index].done = true;
+      const index = state.todos.findIndex((todo) => todo.id === action.payload);
+      state.todos[index].done = !state.todos[index].done;
     },
   },
 });
