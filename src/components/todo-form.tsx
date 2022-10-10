@@ -12,7 +12,6 @@ export const TodoForm = () => {
 
   const onSubmit: SubmitHandler<Form> = (data, event) => {
     event?.preventDefault();
-    console.log(data);
     dispatch(add(data.text));
   }
 

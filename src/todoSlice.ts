@@ -37,7 +37,7 @@ export const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
-    add: (state: TodosSlice, action) => {
+    add: (state, action) => {
       const todo: Todo = {
         id: uuidv4(),
         done: false,
@@ -46,6 +46,11 @@ export const todoSlice = createSlice({
       state.todos.push(todo);
       state.count += 1;
     },
+    remove: (state, action) => {
+      const newTodosState = state.todos.filter((todo) => todo.id !== action.payload);
+      state.todos = newTodosState;
+      state.count -= 1;
+    },
     done: (state: TodosSlice, action) => {
       const index = state.todos.findIndex((todo) => todo.id === action.payload);
       state.todos[index].done = !state.todos[index].done;
@@ -53,6 +58,6 @@ export const todoSlice = createSlice({
   },
 });
 
-export const { add, done } = todoSlice.actions;
+export const { add, done, remove } = todoSlice.actions;
 
 export default todoSlice.reducer;
