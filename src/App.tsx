@@ -1,5 +1,5 @@
 import { shallowEqual } from 'react-redux';
-import { add, done } from './todoSlice';
+import { add, done, remove, Todo } from './todoSlice';
 
 import { useAppDispatch, useAppSelector } from './hooks';
 import { TodoItem } from './components/todo-item';
@@ -12,10 +12,9 @@ export const App = (): JSX.Element => {
   const todos = useAppSelector((state) => state.todo.todos, shallowEqual);
   const dispatch = useAppDispatch();
 
-  const handleAdd = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    e.preventDefault();
-    dispatch(add(e.target.value));
-  };
+  const handleRemove = (id: string): void => {
+    dispatch(remove(id));
+  }
 
   const handleDone = (id: string): void => {
     dispatch(done(id));
@@ -32,10 +31,8 @@ export const App = (): JSX.Element => {
           <TodoItem
             key={todo.id}
             todo={todo}
-            onChange={() => {
-              console.info('xxx', todo.id);
-              handleDone(todo.id)
-            }}
+            handleChange={() => handleDone(todo.id)}
+            handleRemove={() => handleRemove(todo.id)}
           />
         ))}
       </ul>
